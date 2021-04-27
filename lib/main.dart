@@ -28,8 +28,6 @@ class QuizPage extends StatefulWidget {
 class _QuizPageState extends State<QuizPage> {
   List<Icon> scorekeeper = [];
 
-  int currentQ = 0;
-
   QuizBrain quizBrain = QuizBrain();
 
   @override
@@ -44,7 +42,7 @@ class _QuizPageState extends State<QuizPage> {
             padding: EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                quizBrain.questionBnak[currentQ].questionTxt,
+                quizBrain.getQuestionText(),
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 25.0,
@@ -68,24 +66,22 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
               onPressed: () {
-                if (currentQ < quizBrain.questionBnak.length) {
-                  bool correctanswer = quizBrain.questionBnak[currentQ].answer;
-                  if (correctanswer == true) {
-                    scorekeeper.add(Icon(
-                      Icons.check,
-                      color: Colors.green,
-                    ));
-                  } else {
-                    scorekeeper.add(Icon(
-                      Icons.close,
-                      color: Colors.red,
-                    ));
-                  }
-
-                  setState(() {
-                    currentQ++;
-                  });
+                bool correctanswer = quizBrain.getAnswer();
+                if (correctanswer == true) {
+                  scorekeeper.add(Icon(
+                    Icons.check,
+                    color: Colors.green,
+                  ));
+                } else {
+                  scorekeeper.add(Icon(
+                    Icons.close,
+                    color: Colors.red,
+                  ));
                 }
+
+                setState(() {
+                  quizBrain.nextQ();
+                });
               },
             ),
           ),
