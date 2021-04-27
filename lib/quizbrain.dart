@@ -31,10 +31,21 @@ class QuizBrain {
         true),
   ];
 
+  void reset() {
+    _qno = 0;
+  }
+
   void nextQ() {
     if (_qno < _questionBnak.length - 1) {
       _qno++;
     }
+  }
+
+  bool isFinished() {
+    if (_qno < _questionBnak.length - 1)
+      return false;
+    else
+      return true;
   }
 
   String getQuestionText() {

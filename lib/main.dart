@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'quizbrain.dart';
 
 void main() => runApp(Quizzler());
@@ -29,6 +30,35 @@ class _QuizPageState extends State<QuizPage> {
   List<Icon> scorekeeper = [];
 
   QuizBrain quizBrain = QuizBrain();
+
+  void checkAnswer(bool useranswer) {
+    bool correctanswer = quizBrain.getAnswer();
+    if (correctanswer == useranswer) {
+      scorekeeper.add(Icon(
+        Icons.check,
+        color: Colors.green,
+      ));
+    } else {
+      scorekeeper.add(Icon(
+        Icons.close,
+        color: Colors.red,
+      ));
+    }
+
+    setState(() {
+      quizBrain.nextQ();
+      if (quizBrain.isFinished()) {
+        quizBrain.reset();
+        scorekeeper = [];
+        Alert(
+                type: AlertType.success,
+                context: context,
+                title: "Quiz is over",
+                desc: "You can start again")
+            .show();
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,22 +96,7 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
               onPressed: () {
-                bool correctanswer = quizBrain.getAnswer();
-                if (correctanswer == true) {
-                  scorekeeper.add(Icon(
-                    Icons.check,
-                    color: Colors.green,
-                  ));
-                } else {
-                  scorekeeper.add(Icon(
-                    Icons.close,
-                    color: Colors.red,
-                  ));
-                }
-
-                setState(() {
-                  quizBrain.nextQ();
-                });
+                checkAnswer(true);
               },
             ),
           ),
@@ -98,7 +113,9 @@ class _QuizPageState extends State<QuizPage> {
                   color: Colors.white,
                 ),
               ),
-              onPressed: () {},
+              onPressed: () {
+                checkAnswer(false);
+              },
             ),
           ),
         ),
