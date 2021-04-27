@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'quizbrain.dart';
 
 void main() => runApp(Quizzler());
 
@@ -27,13 +28,9 @@ class QuizPage extends StatefulWidget {
 class _QuizPageState extends State<QuizPage> {
   List<Icon> scorekeeper = [];
 
-  List<String> questions = [
-    'You can lead a cow down stairs but not up stairs.',
-    'Approximately one quarter of human bones are in the feet.',
-    'A slug\'s blood is green.'
-  ];
   int currentQ = 0;
-  List<bool> answers = [false, true, true];
+
+  QuizBrain quizBrain = QuizBrain();
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +44,7 @@ class _QuizPageState extends State<QuizPage> {
             padding: EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                questions[currentQ],
+                quizBrain.questionBnak[currentQ].questionTxt,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 25.0,
@@ -71,8 +68,8 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
               onPressed: () {
-                if (currentQ < questions.length - 1) {
-                  bool correctanswer = answers[currentQ];
+                if (currentQ < quizBrain.questionBnak.length) {
+                  bool correctanswer = quizBrain.questionBnak[currentQ].answer;
                   if (correctanswer == true) {
                     scorekeeper.add(Icon(
                       Icons.check,
